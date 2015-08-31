@@ -39,5 +39,14 @@ module.exports = function (ast, comments, tokens) {
         ast.loc.end.column = lastToken.loc.end.column;
       }
     }
+  } else {
+    if (!tokens.length) {
+      ast.loc.start.line = 0;
+      ast.loc.end.line = 0;
+    }
+  }
+  if (ast.body.length > 0) {
+    ast.loc.start.line = ast.body[0].loc.start.line;
+    ast.start = ast.body[0].start;
   }
 };
