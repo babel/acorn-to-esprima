@@ -9,6 +9,10 @@ module.exports = function (ast, comments, tokens) {
       ast.start = lastComment.end;
       ast.loc.start.line = lastComment.loc.end.line;
       ast.loc.start.column = lastComment.loc.end.column;
+
+      if (ast.leadingComments === null && ast.innerComments.length) {
+        ast.leadingComments = ast.innerComments;
+      }
     } else if (firstComment.start < tokens[0].start) {
       // if there are comments before the first token, the program starts at the first token
       var token = tokens[0];

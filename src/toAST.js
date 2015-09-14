@@ -16,7 +16,6 @@ var astTransformVisitor = {
 
     if (node.innerComments) {
       node.trailingComments = node.innerComments;
-      delete node.innerComments
     }
   },
   exit: function (node) { /* parent */
