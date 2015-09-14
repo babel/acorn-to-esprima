@@ -13,6 +13,11 @@ var astTransformVisitor = {
 
     // private var to track original node type
     node._babelType = node.type;
+
+    if (node.innerComments) {
+      node.trailingComments = node.innerComments;
+      delete node.innerComments
+    }
   },
   exit: function (node) { /* parent */
     if (this.isSpreadProperty()) {
