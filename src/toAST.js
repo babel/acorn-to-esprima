@@ -17,6 +17,9 @@ var astTransformVisitor = {
     if (node.innerComments) {
       node.trailingComments = node.innerComments;
     }
+
+    // make '_paths' non-enumerable (babel-eslint #200)
+    Object.defineProperty(node, "_paths", { value: node._paths, writable: true })
   },
   exit: function (node) { /* parent */
     if (this.isSpreadProperty()) {
