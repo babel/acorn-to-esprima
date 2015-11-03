@@ -48,11 +48,12 @@ module.exports = function (token, tt) {
     token.value = JSON.stringify(token.value);
   } else if (type === tt.regexp) {
     token.type = "RegularExpression";
+    var value = token.value;
     token.regex = {
-      pattern: token.value.pattern,
-      flags: token.value.flags
+      pattern: value.pattern,
+      flags: value.flags
     };
-    token.value = String(token.value.value);
+    token.value = "/" + value.pattern + "/" + value.flags;
   }
 
   return token;
