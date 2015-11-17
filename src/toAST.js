@@ -65,6 +65,11 @@ var astTransformVisitor = {
       delete node.key;
     }
 
+    // async function as generator
+    if (this.isFunction()) {
+      if (node.async) node.generator = true;
+    }
+
     // await transform to yield
     if (this.isAwaitExpression()) {
       node.type = "YieldExpression";
