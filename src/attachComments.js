@@ -49,8 +49,10 @@ module.exports = function (ast, comments, tokens) {
       ast.loc.end.line = 0;
     }
   }
-  if (ast.body.length > 0) {
+  if (ast.body && ast.body.length > 0) {
     ast.loc.start.line = ast.body[0].loc.start.line;
     ast.start = ast.body[0].start;
   }
+  ast.range[0] = ast.start;
+  ast.range[1] = ast.end;
 };
