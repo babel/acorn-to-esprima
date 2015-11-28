@@ -1,4 +1,4 @@
-module.exports = function (token, tt) {
+module.exports = function (token, tt, source) {
   var type = token.type;
   token.range = [token.start, token.end];
 
@@ -42,10 +42,10 @@ module.exports = function (token, tt) {
     token.type = "Keyword";
   } else if (type === tt.num) {
     token.type = "Numeric";
-    token.value = String(token.value);
+    token.value = source.slice(token.start, token.end);
   } else if (type === tt.string) {
     token.type = "String";
-    token.value = JSON.stringify(token.value);
+    token.value = source.slice(token.start, token.end);
   } else if (type === tt.regexp) {
     token.type = "RegularExpression";
     var value = token.value;

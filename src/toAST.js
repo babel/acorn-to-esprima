@@ -1,6 +1,9 @@
 // var traverse = require("babel-core").traverse;
 
-module.exports = function (ast, traverse) {
+var source;
+
+module.exports = function (ast, traverse, code) {
+  source = code;
   ast.sourceType = "module";
   ast.range = [ast.start, ast.end];
   traverse(ast, astTransformVisitor);
@@ -59,7 +62,11 @@ var astTransformVisitor = {
         path.isStringLiteral()) {
       node.type = 'Literal';
       if (!node.raw) {
-        node.raw = node.extra && node.extra.raw;
+        if (node.extra && node.extra.raw) {
+          node.raw = node.extra.raw;
+        } else {
+          node.raw = source.slice(node.start, node.end);
+        }
       }
     }
 
