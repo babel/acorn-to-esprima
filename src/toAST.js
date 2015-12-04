@@ -108,6 +108,7 @@ var astTransformVisitor = {
           async: node.async,
           generator: node.generator,
           expression: node.expression,
+          defaults: [], // basic support - TODO: remove (old esprima)
           loc: {
             start: {
               line: node.key.loc.start.line,
@@ -193,6 +194,13 @@ var astTransformVisitor = {
     // async function as generator
     if (path.isFunction()) {
       if (node.async) node.generator = true;
+    }
+
+    // TODO: remove (old esprima)
+    if (path.isFunction()) {
+      if (!node.defaults) {
+        node.defaults = [];
+      }
     }
 
     // await transform to yield
