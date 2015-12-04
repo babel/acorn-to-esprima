@@ -1,6 +1,6 @@
 {
   "name": "acorn-to-esprima",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Convert acorn tokens to esprima",
   "main": "src/index.js",
   "repository": "babel/acorn-to-esprima",
