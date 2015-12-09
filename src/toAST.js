@@ -100,6 +100,9 @@ var astTransformVisitor = {
     }
 
     if (path.isClassMethod() || path.isObjectMethod()) {
+      var code = source.slice(node.key.end, node.body.start);
+      var offset = code.indexOf("(");
+
       node.value = {
           type: 'FunctionExpression',
           id: node.id,
@@ -112,14 +115,14 @@ var astTransformVisitor = {
           loc: {
             start: {
               line: node.key.loc.start.line,
-              column: node.key.loc.end.column // a[() {]
+              column: node.key.loc.end.column + offset // a[() {]
             },
             end: node.body.loc.end
           }
       }
 
       // [asdf]() {
-      node.value.range = [node.key.range[1], node.body.range[1]];
+      node.value.range = [node.key.end + offset, node.body.end];
 
       if (node.returnType) {
         node.value.returnType = node.returnType;
