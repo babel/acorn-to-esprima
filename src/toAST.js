@@ -138,7 +138,9 @@ var astTransformVisitor = {
 
       if (path.isObjectMethod()) {
         node.type = 'Property';
-        node.kind = 'init';
+        if (node.kind === 'method') {
+          node.kind = 'init';
+        }
       }
 
       delete node.body;
