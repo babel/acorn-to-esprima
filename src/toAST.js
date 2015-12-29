@@ -84,6 +84,7 @@ var astTransformVisitor = {
     if (path.isRegExpLiteral()) {
       node.type = 'Literal';
       node.raw = node.extra.raw;
+      node.value = {};
       node.regex = {
         pattern: node.pattern,
         flags: node.flags
