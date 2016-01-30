@@ -9,6 +9,17 @@ module.exports = function (ast, traverse, code) {
   traverse(ast, astTransformVisitor);
 };
 
+function changeToLiteral(node) {
+  node.type = 'Literal';
+  if (!node.raw) {
+    if (node.extra && node.extra.raw) {
+      node.raw = node.extra.raw;
+    } else {
+      node.raw = source.slice(node.start, node.end);
+    }
+  }
+}
+
 var astTransformVisitor = {
   noScope: true,
   enter: function (path) {
@@ -66,14 +77,7 @@ var astTransformVisitor = {
 
     if (path.isNumericLiteral() ||
         path.isStringLiteral()) {
-      node.type = 'Literal';
-      if (!node.raw) {
-        if (node.extra && node.extra.raw) {
-          node.raw = node.extra.raw;
-        } else {
-          node.raw = source.slice(node.start, node.end);
-        }
-      }
+      changeToLiteral(node);
     }
 
     if (path.isBooleanLiteral()) {
@@ -261,6 +265,7 @@ function fixDirectives (path) {
     directive.expression = directive.value;
     delete directive.value;
     directive.expression.type = "Literal";
+    changeToLiteral(directive.expression);
     body.unshift(directive);
   });
   delete directivesContainer.directives;
