@@ -53,6 +53,12 @@ var astTransformVisitor = {
   exit: function (path) {
     var node = path.node;
 
+    [
+      fixDirectives,
+    ].forEach(function (fixer) {
+      fixer(path);
+    });
+
     if (path.isJSXText()) {
       node.type = 'Literal';
       node.raw = node.value;
@@ -234,3 +240,29 @@ var astTransformVisitor = {
     }
   }
 };
+
+
+function fixDirectives (path) {
+  if (!(path.isProgram() || path.isFunction())) return;
+
+  var node = path.node;
+  var directivesContainer = node;
+  var body = node.body;
+
+  if (node.type !== "Program") {
+    directivesContainer = body;
+    body = body.body;
+  }
+
+  if (!directivesContainer.directives) return;
+
+  directivesContainer.directives.reverse().forEach(function (directive) {
+    directive.type = "ExpressionStatement";
+    directive.expression = directive.value;
+    delete directive.value;
+    directive.expression.type = "Literal";
+    body.unshift(directive);
+  });
+  delete directivesContainer.directives;
+}
+// fixDirectives
