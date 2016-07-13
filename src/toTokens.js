@@ -5,7 +5,7 @@ var toToken = require("./toToken");
 
 module.exports = function (tokens, tt, code) {
   // transform tokens to type "Template"
-  convertTemplateType(tokens, tt);
+  convertTemplateType(tokens, tt, code);
   var transformedTokens = tokens.filter(function (token) {
     return token.type !== "CommentLine" && token.type !== "CommentBlock";
   });

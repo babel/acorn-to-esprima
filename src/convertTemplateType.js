@@ -1,4 +1,4 @@
-module.exports = function (tokens, tt) {
+module.exports = function (tokens, tt, code) {
   var startingToken    = 0;
   var currentToken     = 0;
   var numBraces        = 0; // track use of {}
@@ -21,16 +21,7 @@ module.exports = function (tokens, tt) {
 
   // append the values between start and end
   function createTemplateValue(start, end) {
-    var value = "";
-    while (start <= end) {
-      if (tokens[start].value) {
-        value += tokens[start].value;
-      } else if (tokens[start].type !== tt.template) {
-        value += tokens[start].type.label;
-      }
-      start++;
-    }
-    return value;
+    return code.slice(tokens[start].start, tokens[end].end);
   }
 
   // create Template token
